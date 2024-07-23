@@ -24,6 +24,15 @@ public class JwtUtility {
                 .compact();
     }
 
+    public String ChildGenerateToken(String uniqueKey) {
+        return Jwts.builder()
+                .setSubject(uniqueKey)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, secret.getBytes(StandardCharsets.UTF_8))
+                .compact();
+    }
+
     public Claims validateToken(String token) {
        try {
            Claims claims = Jwts.parser()

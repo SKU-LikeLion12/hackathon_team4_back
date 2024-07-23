@@ -47,7 +47,6 @@ public class ParentsService {
         if(parents!=null && parents.checkPassword(passwd)) {
             return jwtUtility.generateToken(parents.getUserId());
         }
-
         return userId;
     }
 
