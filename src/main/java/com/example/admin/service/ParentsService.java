@@ -22,9 +22,10 @@ public class ParentsService {
     }
 
     @Transactional
-    public Parents changeInfo(String token, String nickname, String phoneNumber, String email){
+    public Parents changeInfo(String token, String nickname, String password, String phoneNumber, String email){
         Parents parents = tokenToParents(token);
         if(parents==null) return null;
+        parents.setPassword(password);
         parents.setNickname(nickname);
         parents.setPhoneNumber(phoneNumber);
         parents.setEmail(email);

@@ -1,4 +1,5 @@
 package com.example.admin.DTO;
+import com.example.admin.domain.Parents;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,11 +11,8 @@ public class ParentsDTO {
     @Data
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class ParentsCreateRequest{
-        @Schema(description = "닉네임", example = "test_nickname")
         private String nickname;
-        @Schema(description = "아이디", example = "test_id")
         private String userId;
-        @Schema(description = "비밀번호", example = "test_password")
         private String password;
         private String phoneNumber;
         private String email;
@@ -28,19 +26,25 @@ public class ParentsDTO {
     @Data
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class ParentsResponse{
-        @Schema(description = "회원 아이디", example = "test_id")
+    public static class ResponseParents{
         private String userId;
-        @Schema(description = "닉네임", example = "hello")
         private String nickname;
         private String phoneNumber;
         private String email;
+
+        public ResponseParents(Parents parents) {
+            this.userId = parents.getUserId();
+            this.nickname = parents.getNickname();
+            this.phoneNumber = parents.getPhoneNumber();
+            this.email = parents.getEmail();
+        }
     }
 
     @Data
     public static class ParentsUpdateRequest {
         private String token;
         private String nickname;
+        private String password;
         private String phoneNumber;
         private String email;
     }

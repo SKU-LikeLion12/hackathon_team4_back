@@ -36,7 +36,7 @@ public class PersonChildController {
     //findChildByUniqueKey 테스트용
     //uniqueKey하나 들어가는데 굳이 request 만들지 말자
     public ResponsePersonChild findChildByUniqueKey(@RequestBody Map<String, String> uniqueKey) {
-//        log.info("UniqueKey : {}", uniqueKey.get("uniqueKey"));
+//      log.info("UniqueKey : {}", uniqueKey.get("uniqueKey"));
         PersonChild child = personChildService.findChildByUniqueKey(uniqueKey.get("uniqueKey"));
         if (child == null) {
             return null;
@@ -48,5 +48,4 @@ public class PersonChildController {
     public String login(@RequestBody Map<String, String> uniqueKey) {
         return personChildService.login(uniqueKey.get("uniqueKey"));
     }
-
 }

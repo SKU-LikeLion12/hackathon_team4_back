@@ -9,6 +9,7 @@ import com.example.admin.domain.PersonChild;
 import com.example.admin.repository.PersonChildRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,5 +46,9 @@ public class PersonChildService {
         return uniqueKey;
     }
 
-
+    public List<PersonChild> findChildByParentId(Long userId) {
+        Parents parent = parentsService.findById(userId);
+        if (parent != null) return null;
+        return personChildRepository.findChildAll(parent.getId());
+    }
 }
