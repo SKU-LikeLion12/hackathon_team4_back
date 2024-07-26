@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface DailyCheckRepository {
 
+    DailyCheck create(DailyCheck dailyCheck);
+
     List<DailyCheck> findAll();
 
     DailyCheck findById(Long id);
 
-    void deleteDailyCheck(DailyCheck dailyCheck);
+    void deleteDailyCheck(Date date, PersonChild child);
 
     List<DailyCheck> findByUserAll(PersonChild child);
 

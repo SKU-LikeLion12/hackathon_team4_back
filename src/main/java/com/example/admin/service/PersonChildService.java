@@ -48,7 +48,7 @@ public class PersonChildService {
 
     public List<PersonChild> findChildByParentId(Long userId) {
         Parents parent = parentsService.findById(userId);
-        if (parent != null) return null;
-        return personChildRepository.findChildAll(parent.getId());
+        if (parent == null) return null;
+        return personChildRepository.findPersonChildById(userId);
     }
 }

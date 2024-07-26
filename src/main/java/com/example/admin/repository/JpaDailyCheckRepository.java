@@ -17,8 +17,14 @@ public class JpaDailyCheckRepository implements DailyCheckRepository {
     private final PersonChildRepository personChildRepository;
 
     @Override
+    public DailyCheck create(DailyCheck dailyCheck){
+        em.persist(dailyCheck);
+        return dailyCheck;
+    }
+
+    @Override
     public List<DailyCheck> findAll() {
-        return em.createQuery("select c from DailyCheck c", DailyCheck.class).getResultList();
+        return em.createQuery("select d from DailyCheck d", DailyCheck.class).getResultList();
     }
 
     @Override
@@ -27,7 +33,11 @@ public class JpaDailyCheckRepository implements DailyCheckRepository {
     }
 
     @Override
-    public void deleteDailyCheck(DailyCheck dailyCheck) { em.remove(dailyCheck);}
+    public void deleteDailyCheck(Date date, PersonChild child) {
+        DailyCheck dailyCheck = findByDate(date, child);
+        if(dailyCheck == null) return;
+        em.remove(dailyCheck);
+    }
 
     @Override
     public List<DailyCheck> findByUserAll(PersonChild child){

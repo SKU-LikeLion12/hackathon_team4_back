@@ -19,6 +19,13 @@ public class DailyCheckService {
     private final PersonChildRepository personChildRepository;
 
     @Transactional
+    public DailyCheck create(Date date, String uniqueKey) {
+        DailyCheck dailyCheck = findByDate(date, uniqueKey);
+        if (dailyCheck != null) return null;
+        return dailyCheckRepository.create(new DailyCheck(date, personChildRepository.findByUniqueKey(uniqueKey)));
+    }
+
+    @Transactional
     public List<DailyCheck> findByUserAll(String uniqueKey) {
         PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
         if(personChild == null) return null;
@@ -30,5 +37,24 @@ public class DailyCheckService {
         PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
         if(personChild == null) return null;
         return dailyCheckRepository.findByDate(date, personChild);
+    }
+
+    @Transactional
+    public DailyCheck update(Date date, String uniqueKey, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
+        DailyCheck dailyCheck = findByDate(date, uniqueKey);
+        if (dailyCheck == null) return null;
+        dailyCheck.updateNiceDailyMood(niceSleepDay);
+        dailyCheck.updateHardWorkout(hardWorkout);
+        dailyCheck.updateTakingMedicine(takingMedicine);
+        dailyCheck.updateNiceDailyMood(niceDailyMood);
+        return dailyCheck;
+    }
+
+    @Transactional
+    public void delete(Date date, String uniqueKey) {
+        DailyCheck dailyCheck = findByDate(date, uniqueKey);
+        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+        if (dailyCheck == null || personChild == null) return;
+        dailyCheckRepository.deleteDailyCheck(date, personChild);
     }
 }

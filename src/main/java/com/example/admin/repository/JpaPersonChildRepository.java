@@ -21,15 +21,16 @@ import java.util.function.Function;
 public class JpaPersonChildRepository implements PersonChildRepository {
     private final EntityManager em;
     private final ParentsRepository parentsRepository;
+    private final ParentsService parentsService;
 
     @Override
     public PersonChild findByUniqueKey(String uniqueKey) {
-        return null;
+        return em.find(PersonChild.class, Long.parseLong(uniqueKey));
     }
 
     @Override
-    public List<PersonChild> findChildAll(Long userId){
-        Parents parents = parentsRepository.findById(userId);
+    public List<PersonChild> findPersonChildById(Long id){
+        Parents parents = parentsService.findById(id);
         return em.createQuery("select c from PersonChild c where c.parent = :p", PersonChild.class)
                 .setParameter("p", parents).getResultList();
     }

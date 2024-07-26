@@ -37,7 +37,8 @@ public class ParentsController {
 
     @PostMapping("/login")
     public String login(@RequestBody ParentsLoginRequest request) {
-        return parentsService.login(request.getUserId(),request.getPassword());
+        String token = parentsService.login(request.getUserId(),request.getPassword());
+        return token;
     }
 
     @Operation(summary = "회원정보찾기", description = "user의 정보 찾기", tags = ("user"))
@@ -58,10 +59,12 @@ public class ParentsController {
         parentsService.deleteParents(request.getToken());
     }
 
-    @GetMapping("/parents/child/{parentsid}")
-    public List<ResponsePersonChild> getChlids(@PathVariable("parentsid") Long parentsid){
+    @GetMapping("/parents/child/{parentsId}")
+    public List<ResponsePersonChild> getChlids(@PathVariable("parentsId") Long parentsId){
         List<ResponsePersonChild> responseChilds = new ArrayList<>();
-        for(PersonChild personChild : personChildService.findChildByParentId(parentsid)) {
+        Parents parents = parentsService.findById(parentsId);
+        if(parents == null) return null;
+        for(PersonChild personChild : personChildService.findChildByParentId(parents.getId())) {
             responseChilds.add(new ResponsePersonChild(personChild));
         }
         return responseChilds;
