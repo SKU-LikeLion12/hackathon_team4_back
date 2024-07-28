@@ -28,11 +28,11 @@ public class ParentsController {
                     @ApiResponse(responseCode = "409", description = "중복아이디로 인한 생성 실패")}
     )
     @PostMapping("/parents/add")
-    public ResponseEntity<String> signUp(@RequestBody ParentsCreateRequest request){
+    public String signUp(@RequestBody ParentsCreateRequest request){
         Parents Parents = parentsService.signUp(request.getUserId(), request.getPassword(), request.getNickname(), request.getPhoneNumber(), request.getEmail());
-        if(Parents == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 존재하는 아이디");
+        if(Parents == null) return "이미 존재";
         String token = parentsService.login(request.getUserId(), request.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).body(token);
+        return token;
     }
 
     @PostMapping("/login")

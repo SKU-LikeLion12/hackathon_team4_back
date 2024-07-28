@@ -28,8 +28,8 @@ public class JpaParentsRepository implements ParentsRepository {
     @Override
     public Parents findByUserId(String userId) {
         try {
-            return em.createQuery("select p from Parents p where p.userId = :userId", Parents.class)
-                    .setParameter("userId", userId).getSingleResult();
+            return em.createQuery("select p from Parents p where p.user_id = :user_id", Parents.class)
+                    .setParameter("user_id", userId).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

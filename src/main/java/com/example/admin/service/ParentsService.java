@@ -27,15 +27,15 @@ public class ParentsService {
         if(parents==null) return null;
         parents.setPassword(password);
         parents.setNickname(nickname);
-        parents.setPhoneNumber(phoneNumber);
+        parents.setPhone_number(phoneNumber);
         parents.setEmail(email);
         return parents;
     }
 
     @Transactional
     public Parents signUp(String userId, String password, String nickname, String phoneNumber, String email){
-        Parents Parents = parentsRepository.findByUserId(userId);
-        if(Parents!=null) return null;
+        Parents parents = parentsRepository.findByUserId(userId);
+        if(parents!=null) return null;
         return parentsRepository.save(new Parents(userId, password, nickname, phoneNumber, email));
     }
 
@@ -46,7 +46,7 @@ public class ParentsService {
     public String login(String userId, String passwd){
         Parents parents = parentsRepository.findByUserId(userId);
         if(parents!=null && parents.checkPassword(passwd)) {
-            return jwtUtility.generateToken(parents.getUserId());
+            return jwtUtility.generateToken(parents.getUser_id());
         }
         return userId;
     }

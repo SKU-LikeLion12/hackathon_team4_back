@@ -17,6 +17,7 @@ public class ParentsDTO {
         private String phoneNumber;
         private String email;
     }
+
     @Data
     public static class ParentsLoginRequest {
         private String userId;
@@ -33,9 +34,9 @@ public class ParentsDTO {
         private String email;
 
         public ResponseParents(Parents parents) {
-            this.userId = parents.getUserId();
+            this.userId = parents.getUser_id();
             this.nickname = parents.getNickname();
-            this.phoneNumber = parents.getPhoneNumber();
+            this.phoneNumber = parents.getPhone_number();
             this.email = parents.getEmail();
         }
     }

@@ -12,27 +12,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Parents {
     @Id @GeneratedValue
     private long id;
+
     @Column(unique = true)
-    private String userId;
-    @Setter
+    private String user_id;
+
     private String nickname;
     private String password;
-    private String phoneNumber;
+    private String phone_number;
     private String email;
-    private String longinKey;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Parents(String userid, String password, String nickname, String phoneNumber, String email) {
-        this.userId = userid;
+        this.user_id = userid;
         this.setPassword(password);
         this.nickname = nickname;
-        setPhoneNumber(phoneNumber);
-        setEmail(email);
+        this.phone_number = phoneNumber;
+        this.email = email;
     }
 
     public void setPassword(String password) {
@@ -45,21 +46,5 @@ public class Parents {
 
     public boolean checkPassword(String rawPassword) {
         return passwordEncoder.matches(rawPassword, this.password);
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber != null) {
-            this.phoneNumber = phoneNumber;
-        }else{
-            this.phoneNumber = "";
-        }
-    }
-
-    public void setEmail(String email) {
-        if(email != null) {
-            this.email = email;
-        }else{
-            this.email = "";
-        }
     }
 }
