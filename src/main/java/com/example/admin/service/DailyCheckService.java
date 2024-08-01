@@ -43,7 +43,7 @@ public class DailyCheckService {
     public DailyCheck update(Date date, String uniqueKey, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
         DailyCheck dailyCheck = findByDate(date, uniqueKey);
         if (dailyCheck == null) return null;
-        dailyCheck.updateNiceDailyMood(niceSleepDay);
+        dailyCheck.updateSleep(niceSleepDay);
         dailyCheck.updateHardWorkout(hardWorkout);
         dailyCheck.updateTakingMedicine(takingMedicine);
         dailyCheck.updateNiceDailyMood(niceDailyMood);

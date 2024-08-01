@@ -19,7 +19,7 @@ public class DailyCheckController {
     private final PersonChildService personChildService;
 
     @PostMapping("/dailycheck/add")
-    public ResponseDailyCheck addDailyCheck(@RequestBody DailyCreateRequest request) {
+    public ResponseDailyCheck addDailyCheck(@RequestBody DailyCheckRequest request) {
         PersonChild personChild = personChildService.findChildByUniqueKey(request.getUniqueKey());
         if(personChild == null) return null;
         DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), request.getUniqueKey());
@@ -27,14 +27,14 @@ public class DailyCheckController {
     }
 
     @PutMapping("/dailycheck/update")
-    public ResponseDailyCheck updateDailyCheck(@RequestBody DailyUpdateRequest request) {
+    public ResponseDailyCheck updateDailyCheck(@RequestBody DailyCheckUpdateRequest request) {
         PersonChild personChild = personChildService.findChildByUniqueKey(request.getUniqueKey());
         if(personChild == null) return null;
         DailyCheck dailyCheck = dailyCheckService.update(request.getCheckedDay(), request.getUniqueKey(), request.isNiceSleepDay(), request.isHardWorkout(), request.isTakingMedicine(), request.isNiceDailyMood());
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    @GetMapping("/dailycheck/{uniqueKey}{date}")
+    @GetMapping("/dailycheck/{uniqueKey}/{date}")
     public ResponseDailyCheck getDailyCheckByDate(@PathVariable("uniqueKey") String uniqueKey, @PathVariable("date") Date date) {
         DailyCheck dailyCheck = dailyCheckService.findByDate(date, uniqueKey);
         if(dailyCheck == null) return null;
@@ -51,7 +51,7 @@ public class DailyCheckController {
     }
 
     @DeleteMapping("/dailycheck")
-    public void deleteDailyCheck(@RequestBody DailyCheckDeleteRequest request){
+    public void deleteDailyCheck(@RequestBody DailyCheckRequest request){
         dailyCheckService.delete(request.getCheckedDay(), request.getUniqueKey());
     }
 }

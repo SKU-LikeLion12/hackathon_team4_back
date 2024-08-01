@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,13 +27,14 @@ public class ParentsController {
     )
     @PostMapping("/parents/add")
     public String signUp(@RequestBody ParentsCreateRequest request){
-        Parents Parents = parentsService.signUp(request.getUserId(), request.getPassword(), request.getNickname(), request.getPhoneNumber(), request.getEmail());
-        if(Parents == null) return "이미 존재";
+        Parents parents = parentsService.signUp(request.getUserId(), request.getPassword(), request.getNickname(), request.getPhoneNumber(), request.getEmail());
+        if(parents == null) return "이미 존재";
         String token = parentsService.login(request.getUserId(), request.getPassword());
+        parents.setToken(token);
         return token;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/parents/login")
     public String login(@RequestBody ParentsLoginRequest request) {
         String token = parentsService.login(request.getUserId(),request.getPassword());
         return token;
@@ -59,10 +58,10 @@ public class ParentsController {
         parentsService.deleteParents(request.getToken());
     }
 
-    @GetMapping("/parents/child/{parentsId}")
-    public List<ResponsePersonChild> getChlids(@PathVariable("parentsId") Long parentsId){
+    @GetMapping("/parents/child/{userId}")
+    public List<ResponsePersonChild> getChlids(@PathVariable("userId") String userId){
         List<ResponsePersonChild> responseChilds = new ArrayList<>();
-        Parents parents = parentsService.findById(parentsId);
+        Parents parents = parentsService.findByUserId(userId);
         if(parents == null) return null;
         for(PersonChild personChild : personChildService.findChildByParentId(parents.getId())) {
             responseChilds.add(new ResponsePersonChild(personChild));

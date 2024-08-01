@@ -8,25 +8,19 @@ import java.util.Date;
 
 public class DailyCheckDTO {
     @Data
-    public static class DailyCreateRequest{
+    public static class DailyCheckRequest {
         private Date checkedDay;
         private String uniqueKey;
     }
 
     @Data
-    public static class DailyUpdateRequest{
+    public static class DailyCheckUpdateRequest {
         private Date checkedDay;
         private String uniqueKey;
         private boolean niceSleepDay;
         private boolean hardWorkout;
         private boolean takingMedicine;
         private boolean niceDailyMood;
-    }
-
-    @Data
-    public static class DailyCheckDeleteRequest{
-        private Date checkedDay;
-        private String uniqueKey;
     }
 
     @Data
