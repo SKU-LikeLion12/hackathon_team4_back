@@ -47,7 +47,7 @@ public class ParentsController {
         return new ResponseParents(parents);
     }
 
-    @PutMapping("/parents/info") //적당한 url 작성필요(사용자의 정보를 수정하는 기능)
+    @PutMapping("/parents/info")
     public ResponseParents changeMemberInfo(@RequestBody ParentsUpdateRequest request) {
         Parents findParents  = parentsService.changeInfo(request.getToken(), request.getNickname(), request.getPassword(), request.getPhoneNumber(), request.getEmail());
         return new ResponseParents(findParents);

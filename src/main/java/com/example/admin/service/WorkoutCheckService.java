@@ -24,7 +24,7 @@ public class WorkoutCheckService {
         if (personChild == null) return null;
         WorkoutCheck workoutCheck = workoutCheckReopsitory.find(personChild, date, type, name);
         if(workoutCheck != null) return null;
-        return workoutCheckReopsitory.create(new WorkoutCheck(personChild, date, type, name));
+        return workoutCheckReopsitory.create(new WorkoutCheck(personChild, date, type, name, uniqueKey));
     }
 
     @Transactional
@@ -40,10 +40,11 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public void delete(String uniqueKey, Date date, String type, String name) {
+    public String delete(String uniqueKey, Date date, String type, String name) {
         PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
-        if(personChild == null) return;
+        if(personChild == null) return "failed";
         workoutCheckReopsitory.delete(personChild, date, type, name);
+        return "success";
     }
 
     @Transactional
@@ -68,8 +69,8 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public List<WorkoutCheck> findByName(String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(name);
+    public List<WorkoutCheck> findByName(String uniqueKey, String name) {
+        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByChild(personChild);
     }
