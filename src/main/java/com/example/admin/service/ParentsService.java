@@ -1,6 +1,5 @@
 package com.example.admin.service;
 
-
 import com.example.admin.domain.Parents;
 import com.example.admin.exception.IdNotFoundException;
 import com.example.admin.repository.ParentsRepository;
@@ -45,8 +44,8 @@ public class ParentsService {
 
     public String login(String userId, String passwd){
         Parents parents = parentsRepository.findByUserId(userId);
-        if(parents!=null && parents.checkPassword(passwd)) {
-            return jwtUtility.generateToken(parents.getUser_id());
+        if(parents != null && parents.checkPassword(passwd)) {
+            return jwtUtility.generateToken(userId);
         }
         return null;
     }

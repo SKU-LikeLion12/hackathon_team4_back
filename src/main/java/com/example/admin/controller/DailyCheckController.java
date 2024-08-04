@@ -6,6 +6,7 @@ import com.example.admin.domain.PersonChild;
 import com.example.admin.service.DailyCheckService;
 import com.example.admin.service.PersonChildService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,40 +20,59 @@ public class DailyCheckController {
     private final PersonChildService personChildService;
  
     @PostMapping("/dailycheck/add")
-    public ResponseDailyCheck addDailyCheck(@RequestBody DailyCheckRequest request) {
-        PersonChild personChild = personChildService.findChildByUniqueKey(request.getUniqueKey());
+    public ResponseDailyCheck addDailyCheck(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody DailyCheckRequest request) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
-        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), request.getUniqueKey());
+        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
         return new ResponseDailyCheck(dailyCheck);
     }
 
     @PutMapping("/dailycheck/update")
-    public ResponseDailyCheck updateDailyCheck(@RequestBody DailyCheckUpdateRequest request) {
-        PersonChild personChild = personChildService.findChildByUniqueKey(request.getUniqueKey());
+    public ResponseDailyCheck updateDailyCheck(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody DailyCheckUpdateRequest request) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
-        DailyCheck dailyCheck = dailyCheckService.update(request.getCheckedDay(), request.getUniqueKey(), request.isNiceSleepDay(), request.isHardWorkout(), request.isTakingMedicine(), request.isNiceDailyMood());
+        DailyCheck dailyCheck = dailyCheckService.update(
+                request.getCheckedDay(),
+                token,
+                request.isNiceSleepDay(),
+                request.isHardWorkout(),
+                request.isTakingMedicine(),
+                request.isNiceDailyMood());
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    @GetMapping("/dailycheck/{uniqueKey}/{date}")
-    public ResponseDailyCheck getDailyCheckByDate(@PathVariable("uniqueKey") String uniqueKey, @PathVariable("date") Date date) {
-        DailyCheck dailyCheck = dailyCheckService.findByDate(date, uniqueKey);
+    @GetMapping("/dailycheck/{date}")
+    public ResponseDailyCheck getDailyCheckByDate(
+            @RequestHeader("Authorization") String authorizationHeader
+            ,@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        DailyCheck dailyCheck = dailyCheckService.findByDate(date, token);
         if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    @GetMapping("/dailycheck/{uniqueKey}")
-    public List<ResponseDailyCheck> getAllDailyCheck(@PathVariable("uniqueKey") String uniqueKey) {
+    @GetMapping("/dailycheck")
+    public List<ResponseDailyCheck> getAllDailyCheck(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
         List<ResponseDailyCheck> response = new ArrayList<>();
-        for(DailyCheck dailyCheck : dailyCheckService.findByUserAll(uniqueKey)){
+        for(DailyCheck dailyCheck : dailyCheckService.findByUserAll(token)){
             response.add(new ResponseDailyCheck(dailyCheck));
         }
         return response;
     }
 
     @DeleteMapping("/dailycheck")
-    public void deleteDailyCheck(@RequestBody DailyCheckRequest request){
-        dailyCheckService.delete(request.getCheckedDay(), request.getUniqueKey());
+    public void deleteDailyCheck(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody DailyCheckRequest request){
+        String token = authorizationHeader.replace("Bearer ", "");
+        dailyCheckService.delete(request.getCheckedDay(), token);
     }
 }
  

@@ -32,7 +32,6 @@ public class PersonChildDTO {
         private String birthDate;
         private double height;
         private double weight;
-        private String token;
     }
 
     @Data

@@ -17,7 +17,7 @@ public class DailyCheck {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uniqueKey")
+    @JoinColumn(name = "token")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PersonChild child;
 

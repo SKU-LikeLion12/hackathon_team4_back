@@ -43,15 +43,9 @@ public class ParentsDTO {
 
     @Data
     public static class ParentsUpdateRequest {
-        private String token;
         private String nickname;
         private String password;
         private String phoneNumber;
         private String email;
-    }
-
-    @Data
-    public static class ParentsDeleteRequest {
-        private String token;
     }
 }

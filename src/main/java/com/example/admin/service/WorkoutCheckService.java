@@ -17,14 +17,15 @@ import java.util.List;
 public class WorkoutCheckService {
     private final WorkoutCheckReopsitory workoutCheckReopsitory;
     private final PersonChildRepository personChildRepository;
+    private final PersonChildService personChildService;
 
     @Transactional
-    public WorkoutCheck create(String uniqueKey, Date date, String type, String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public WorkoutCheck create(String token, Date date, String type, String name) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if (personChild == null) return null;
-        WorkoutCheck workoutCheck = workoutCheckReopsitory.find(personChild, date, type, name);
+        WorkoutCheck workoutCheck = find(token, date, type, name);
         if(workoutCheck != null) return null;
-        return workoutCheckReopsitory.create(new WorkoutCheck(personChild, date, type, name, uniqueKey));
+        return workoutCheckReopsitory.create(new WorkoutCheck(personChild, date, type, name));
     }
 
     @Transactional
@@ -40,44 +41,44 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public String delete(String uniqueKey, Date date, String type, String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
-        if(personChild == null) return "failed";
+    public boolean delete(String token, Date date, String type, String name) {
+        PersonChild personChild = personChildService.tokenToChild(token);
+        if(personChild == null) return false;
         workoutCheckReopsitory.delete(personChild, date, type, name);
-        return "success";
+        return true;
     }
 
     @Transactional
-    public List<WorkoutCheck> findByChild(String uniqueKey) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public List<WorkoutCheck> findByChild(String token) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByChild(personChild);
     }
 
     @Transactional
-    public List<WorkoutCheck> findByDate(String uniqueKey, Date date) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public List<WorkoutCheck> findByDate(String token, Date date) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByDate(personChild, date);
     }
 
     @Transactional
-    public List<WorkoutCheck> findByType(String uniqueKey, String type) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public List<WorkoutCheck> findByType(String token, String type) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByType(personChild, type);
     }
 
     @Transactional
-    public List<WorkoutCheck> findByName(String uniqueKey, String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public List<WorkoutCheck> findByName(String token, String name) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByChild(personChild);
     }
 
     @Transactional
-    public WorkoutCheck find(String uniqueKey, Date date, String type, String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public WorkoutCheck find(String token, Date date, String type, String name) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.find(personChild, date, type, name);
     }
