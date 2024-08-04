@@ -22,7 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class WorkoutRecommendationService {
 
-    private final String OPENAI_API_KEY = "sk-None-hEzMBynWXTAIbWJ48KyQT3BlbkFJCfhM9L0R6aS5l2j389OX";  // OpenAI API 키
+    private final String OPENAI_API_KEY = "";  // OpenAI API 키
     private final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private final PersonChildService personChildService;
