@@ -2,14 +2,13 @@ package com.example.admin.service;
 
 import com.example.admin.domain.Parents;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Parent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.admin.domain.PersonChild;
 import com.example.admin.repository.PersonChildRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -51,4 +50,13 @@ public class PersonChildService {
         if (parent == null) return null;
         return personChildRepository.findPersonChildById(userId);
     }
+    @Transactional
+    public Optional<PersonChild> findChildById(Long id){
+        return personChildRepository.findById(id);
+    }
+
+    public PersonChild tokenToChild(String token) {
+        return personChildRepository.findByUniqueKey(jwtUtility.validateToken(token).getSubject());
+    }
+
 }
