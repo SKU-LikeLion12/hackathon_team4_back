@@ -41,6 +41,13 @@ public class DailyCheckService {
     }
 
     @Transactional
+    public DailyCheck findById(Long id, String token) {
+        PersonChild personChild = personChildService.tokenToChild(token);
+        if(personChild == null) return null;
+        return dailyCheckRepository.findById(id);
+    }
+
+    @Transactional
     public DailyCheck update(Date date, String token, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
         DailyCheck dailyCheck = findByDate(date, token);
         if (dailyCheck == null) return null;
@@ -52,10 +59,10 @@ public class DailyCheckService {
     }
 
     @Transactional
-    public void delete(Date date, String token) {
+    public boolean delete(Date date, String token) {
         DailyCheck dailyCheck = findByDate(date, token);
         PersonChild personChild = personChildService.tokenToChild(token);
-        if (dailyCheck == null || personChild == null) return;
-        dailyCheckRepository.deleteDailyCheck(date, personChild);
+        if (dailyCheck == null || personChild == null) return false;
+        return dailyCheckRepository.deleteDailyCheck(date, personChild);
     }
 }

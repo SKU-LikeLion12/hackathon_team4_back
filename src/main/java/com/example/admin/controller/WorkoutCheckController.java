@@ -24,7 +24,7 @@ public class WorkoutCheckController {
     @PostMapping("/workoutcheck/add")
     public ResponseWorkoutCheck addWorkoutCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody WorkoutCheckRequest request) {
+            @RequestBody WorkoutCheckUpdateRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
@@ -40,22 +40,24 @@ public class WorkoutCheckController {
     @PutMapping("/workoutcheck/update")
     public ResponseWorkoutCheck updateWorkoutCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody WorkoutCheckRequest request) {
+            @RequestBody WorkoutCheckUpdateRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         WorkoutCheck workoutCheck = workoutCheckService.update(
                 token,
+                request.getWorkoutId(),
                 request.getCheckedDay(),
                 request.getWorkoutType(),
                 request.getWorkoutName());
+        if(workoutCheck == null) return null;
         return new ResponseWorkoutCheck(workoutCheck);
     }
 
     @DeleteMapping("/workoutcheck")
     public boolean deleteWorkoutCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody WorkoutCheckRequest request) {
+            @RequestBody WorkoutCheckUpdateRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return false;

@@ -29,6 +29,11 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
+    public WorkoutCheck findById(PersonChild personChild, Long id) {
+        return em.find(WorkoutCheck.class, id);
+    }
+
+    @Override
     public List<WorkoutCheck> findByChild(PersonChild personChild) {
         try {
             return em.createQuery("select w from WorkoutCheck w where w.child = :child",WorkoutCheck.class)

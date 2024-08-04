@@ -27,6 +27,7 @@ public class DailyCheckController {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
+        if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
 
@@ -57,6 +58,16 @@ public class DailyCheckController {
         return new ResponseDailyCheck(dailyCheck);
     }
 
+    @GetMapping("/dailycheck/{id}")
+    public ResponseDailyCheck getDailyCheckByDate(
+            @RequestHeader("Authorization") String authorizationHeader
+            ,@PathVariable("id") Long id) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        DailyCheck dailyCheck = dailyCheckService.findById(id, token);
+        if(dailyCheck == null) return null;
+        return new ResponseDailyCheck(dailyCheck);
+    }
+
     @GetMapping("/dailycheck")
     public List<ResponseDailyCheck> getAllDailyCheck(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
@@ -68,11 +79,11 @@ public class DailyCheckController {
     }
 
     @DeleteMapping("/dailycheck")
-    public void deleteDailyCheck(
+    public boolean deleteDailyCheck(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody DailyCheckRequest request){
         String token = authorizationHeader.replace("Bearer ", "");
-        dailyCheckService.delete(request.getCheckedDay(), token);
+        return dailyCheckService.delete(request.getCheckedDay(), token);
     }
 }
  

@@ -15,10 +15,18 @@ public class WorkoutCheckDTO {
     }
 
     @Data
+    public static class WorkoutCheckUpdateRequest {
+        private Date checkedDay;
+        private Long workoutId;
+        private String workoutType;
+        private String workoutName;
+    }
+
+    @Data
     @AllArgsConstructor
     public static class ResponseWorkoutCheck {
-        private Long id;
         private Date checkedDay;
+        private Long id;
         private String workoutType;
         private String workoutName;
 

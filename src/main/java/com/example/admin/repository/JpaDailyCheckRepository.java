@@ -33,10 +33,11 @@ public class JpaDailyCheckRepository implements DailyCheckRepository {
     }
 
     @Override
-    public void deleteDailyCheck(Date date, PersonChild child) {
+    public boolean deleteDailyCheck(Date date, PersonChild child) {
         DailyCheck dailyCheck = findByDate(date, child);
-        if(dailyCheck == null) return;
+        if(dailyCheck == null) return false;
         em.remove(dailyCheck);
+        return true;
     }
 
     @Override

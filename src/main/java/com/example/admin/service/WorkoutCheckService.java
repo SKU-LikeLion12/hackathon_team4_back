@@ -29,10 +29,10 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public WorkoutCheck update(String uniqueKey, Date date, String type, String name) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public WorkoutCheck update(String token, Long id, Date date, String type, String name) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if (personChild == null) return null;
-        WorkoutCheck workoutCheck = workoutCheckReopsitory.find(personChild, date, type, name);
+        WorkoutCheck workoutCheck = workoutCheckReopsitory.findById(personChild , id);
         if(workoutCheck == null) return null;
         workoutCheck.setCheckedDay(date);
         workoutCheck.setWorkoutType(type);
