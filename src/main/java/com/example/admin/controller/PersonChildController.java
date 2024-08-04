@@ -20,14 +20,19 @@ public class PersonChildController {
 //    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/child/add")
-    public ResponsePersonChild addChild(@RequestBody RequstPersonChild request) {
+    public ResponsePersonChild addChild(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody RequestPersonChild request) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
         PersonChild child = personChildService.createChild(
                 request.getName(),
                 request.getGender(),
                 request.getBirthDate(),
                 request.getHeight(),
                 request.getWeight(),
-                request.getToken()
+                token
         );
         return new ResponsePersonChild(child);
     }

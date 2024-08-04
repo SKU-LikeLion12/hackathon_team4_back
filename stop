@@ -1,0 +1,74 @@
+[33mcommit 7d55d23d564b4c6ac546b5d48cb884668c992b10[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mjunbeom[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/junbeom[m[33m)[m
+Merge: 87be846 540973b
+Author: ttotto0421 <130743812+ttotto0421@users.noreply.github.com>
+Date:   Sun Jul 28 23:07:39 2024 +0900
+
+    Merge pull request #1 from SKU-LikeLion12/junbeom
+    
+    Medicine 추가
+
+[33mcommit 540973b402c0db8d8c4df80b3dee9dc30c47412f[m[33m ([m[1;32mmain[m[33m)[m
+Author: junbeom <ttotto0421@gmail.com>
+Date:   Sun Jul 28 23:04:37 2024 +0900
+
+    Medicine 추가
+
+[33mcommit 87be84654bc8883a878d25c2d9ceae7b5905e2b0[m[33m ([m[1;31morigin/Parents[m[33m)[m
+Author: Blueturtle <dull0822@gmail.com>
+Date:   Sun Jul 28 20:46:55 2024 +0900
+
+    dailycheck last version
+
+[33mcommit 7560abf97fc0555b947a7d5d34c838dd3091b7b6[m
+Author: Blueturtle <dull0822@gmail.com>
+Date:   Fri Jul 26 12:04:41 2024 +0900
+
+    dailycheckv2
+
+[33mcommit 812c25adabf8f555f148883b3a97cba346ba7b69[m
+Author: Blueturtle <dull0822@gmail.com>
+Date:   Thu Jul 25 17:44:45 2024 +0900
+
+    DailyCheckv1
+
+[33mcommit cd770c046abbd143a7524edc3b861063e82520bc[m
+Author: Blueturtle <dull0822@gmail.com>
+Date:   Thu Jul 25 12:33:51 2024 +0900
+
+    보호자의 피보호자 찾기
+
+[33mcommit d74cac2d0ea455fa7e938e575fcf866dead710d1[m
+Author: junbeom <ttotto0421@gmail.com>
+Date:   Wed Jul 24 00:18:57 2024 +0900
+
+    자식 로그인
+
+[33mcommit 746175c6cce6d06472e0b3f5268b6fe1c3b67ae1[m
+Author: Blueturtle <dull0822@gmail.com>
+Date:   Fri Jul 19 00:05:58 2024 +0900
+
+    parent
+
+[33mcommit 7715158352ba1bc5be4f801e8398076a5d34d90b[m
+Author: Blueturtle08 <dull0822@icloud.com>
+Date:   Thu Jul 18 15:53:02 2024 +0900
+
+    Your commit message
+
+[33mcommit 7a7b499183aaef89a14d7647b179d22e4b718133[m
+Author: Blueturtle08 <dull0822@icloud.com>
+Date:   Thu Jul 18 15:43:54 2024 +0900
+
+    프로토타입
+
+[33mcommit 8c15066f8e0af833068025446ef6004b6469d8b5[m
+Author: junbeom <ttotto0421@gmail.com>
+Date:   Thu Jul 18 14:57:00 2024 +0900
+
+    f2
+
+[33mcommit 4c2bd20aabbbfbfbf6037bee86fb41dfa3bcad0f[m
+Author: junbeom <ttotto0421@gmail.com>
+Date:   Thu Jul 18 14:48:14 2024 +0900
+
+    first

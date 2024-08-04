@@ -17,7 +17,7 @@ import java.util.List;
 public class DailyCheckController {
     private final DailyCheckService dailyCheckService;
     private final PersonChildService personChildService;
-
+ 
     @PostMapping("/dailycheck/add")
     public ResponseDailyCheck addDailyCheck(@RequestBody DailyCheckRequest request) {
         PersonChild personChild = personChildService.findChildByUniqueKey(request.getUniqueKey());
@@ -55,3 +55,4 @@ public class DailyCheckController {
         dailyCheckService.delete(request.getCheckedDay(), request.getUniqueKey());
     }
 }
+ 

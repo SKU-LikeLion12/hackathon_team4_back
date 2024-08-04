@@ -26,13 +26,18 @@ public class PersonChildDTO {
     }
 
     @Data
-    public static class RequstPersonChild {
+    public static class RequestPersonChild {
         private String name;
         private String gender;
         private String birthDate;
         private double height;
         private double weight;
         private String token;
+    }
+
+    @Data
+    public static class RequestChildId {
+        private Long childId;
     }
 
 }
