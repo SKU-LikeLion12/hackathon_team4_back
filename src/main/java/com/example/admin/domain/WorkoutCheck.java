@@ -18,8 +18,6 @@ public class WorkoutCheck {
     @GeneratedValue
     private Long id;
 
-    private String uniqueKey;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -29,11 +27,10 @@ public class WorkoutCheck {
     private String workoutType;
     private String workoutName;
 
-    public WorkoutCheck(PersonChild child, Date checkedDay, String workoutType, String workoutName, String uniqueKey){
+    public WorkoutCheck(PersonChild child, Date checkedDay, String workoutType, String workoutName){
         this.child = child;
         this.checkedDay = checkedDay;
         this.workoutType = workoutType;
         this.workoutName = workoutName;
-        this.uniqueKey = uniqueKey;
     }
 }

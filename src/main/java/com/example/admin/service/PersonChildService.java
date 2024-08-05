@@ -67,11 +67,12 @@ public class PersonChildService {
         return uniqueKey;
     }
 
-    public List<PersonChild> findChildByParentId(Long userId) {
-        Parents parent = parentsService.findById(userId);
+    public List<PersonChild> findChildByParentsUserId(String userId) {
+        Parents parent = parentsService.findByUserId(userId);
         if (parent == null) return null;
-        return personChildRepository.findPersonChildById(userId);
+        return personChildRepository.findPersonChildByParent(parent);
     }
+
     @Transactional
     public Optional<PersonChild> findChildById(Long id){
         return personChildRepository.findById(id);

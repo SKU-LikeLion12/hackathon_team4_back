@@ -29,10 +29,9 @@ public class JpaPersonChildRepository implements PersonChildRepository {
     }
 
     @Override
-    public List<PersonChild> findPersonChildById(Long id){
-        Parents parents = parentsService.findById(id);
+    public List<PersonChild> findPersonChildByParent(Parents parent){
         return em.createQuery("select c from PersonChild c where c.parent = :p", PersonChild.class)
-                .setParameter("p", parents).getResultList();
+                .setParameter("p", parent).getResultList();
     }
 
     @Override

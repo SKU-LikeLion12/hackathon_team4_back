@@ -14,7 +14,7 @@ public interface DailyCheckRepository {
 
     DailyCheck findById(Long id);
 
-    void deleteDailyCheck(Date date, PersonChild child);
+    boolean deleteDailyCheck(Date date, PersonChild child);
 
     List<DailyCheck> findByUserAll(PersonChild child);
 

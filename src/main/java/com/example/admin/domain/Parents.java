@@ -26,8 +26,6 @@ public class Parents {
     private String phone_number;
     private String email;
 
-    private String token;
-
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Parents(String userid, String password, String nickname, String phoneNumber, String email) {

@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/idfit?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: Wnsqja6602@
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -11,4 +11,4 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-#    database-platform:ls
+#    database-platform:

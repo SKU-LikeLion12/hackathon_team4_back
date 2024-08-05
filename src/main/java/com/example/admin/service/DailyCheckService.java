@@ -17,31 +17,39 @@ import java.util.List;
 public class DailyCheckService {
     private final DailyCheckRepository dailyCheckRepository;
     private final PersonChildRepository personChildRepository;
+    private final PersonChildService personChildService;
 
     @Transactional
-    public DailyCheck create(Date date, String uniqueKey) {
-        DailyCheck dailyCheck = findByDate(date, uniqueKey);
+    public DailyCheck create(Date date, String token) {
+        DailyCheck dailyCheck = findByDate(date, token);
         if (dailyCheck != null) return null;
-        return dailyCheckRepository.create(new DailyCheck(date, personChildRepository.findByUniqueKey(uniqueKey)));
+        return dailyCheckRepository.create(new DailyCheck(date, personChildService.tokenToChild(token)));
     }
 
     @Transactional
-    public List<DailyCheck> findByUserAll(String uniqueKey) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public List<DailyCheck> findByUserAll(String token) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return dailyCheckRepository.findByUserAll(personChild);
     }
 
     @Transactional
-    public DailyCheck findByDate(Date date, String uniqueKey) {
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
+    public DailyCheck findByDate(Date date, String token) {
+        PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return dailyCheckRepository.findByDate(date, personChild);
     }
 
     @Transactional
-    public DailyCheck update(Date date, String uniqueKey, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
-        DailyCheck dailyCheck = findByDate(date, uniqueKey);
+    public DailyCheck findById(Long id, String token) {
+        PersonChild personChild = personChildService.tokenToChild(token);
+        if(personChild == null) return null;
+        return dailyCheckRepository.findById(id);
+    }
+
+    @Transactional
+    public DailyCheck update(Date date, String token, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
+        DailyCheck dailyCheck = findByDate(date, token);
         if (dailyCheck == null) return null;
         dailyCheck.updateSleep(niceSleepDay);
         dailyCheck.updateHardWorkout(hardWorkout);
@@ -51,10 +59,10 @@ public class DailyCheckService {
     }
 
     @Transactional
-    public void delete(Date date, String uniqueKey) {
-        DailyCheck dailyCheck = findByDate(date, uniqueKey);
-        PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
-        if (dailyCheck == null || personChild == null) return;
-        dailyCheckRepository.deleteDailyCheck(date, personChild);
+    public boolean delete(Date date, String token) {
+        DailyCheck dailyCheck = findByDate(date, token);
+        PersonChild personChild = personChildService.tokenToChild(token);
+        if (dailyCheck == null || personChild == null) return false;
+        return dailyCheckRepository.deleteDailyCheck(date, personChild);
     }
 }

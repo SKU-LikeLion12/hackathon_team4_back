@@ -11,6 +11,8 @@ public interface WorkoutCheckReopsitory {
 
     void delete(PersonChild child, Date date, String type, String name);
 
+    WorkoutCheck findById(PersonChild personChild, Long id);
+
     List<WorkoutCheck> findByChild(PersonChild personChild);
 
     List<WorkoutCheck> findByDate(PersonChild child, Date date);

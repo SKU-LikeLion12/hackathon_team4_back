@@ -29,14 +29,17 @@ public class JpaParentsRepository implements ParentsRepository {
     public Parents findByUserId(String userId) {
         try {
             return em.createQuery("select p from Parents p where p.user_id = :user_id", Parents.class)
-                    .setParameter("user_id", userId).getSingleResult();
+                    .setParameter("user_id", userId)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
-    public List<Parents> findAll() {return em.createQuery("select p from Parents p", Parents.class).getResultList();}
+    public List<Parents> findAll() {
+        return em.createQuery("select p from Parents p", Parents.class).getResultList();
+    }
 
     @Override
     public void deleteParents(Parents parents) { em.remove(parents);}
@@ -44,6 +47,7 @@ public class JpaParentsRepository implements ParentsRepository {
     @Override
     public List<Parents> findByName(String name) {
         return em.createQuery("select p from Parents p where p.nickname = :name", Parents.class)
-                .setParameter("name", name).getResultList();
+                .setParameter("name", name)
+                .getResultList();
     }
 }

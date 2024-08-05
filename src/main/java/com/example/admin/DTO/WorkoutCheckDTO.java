@@ -9,8 +9,15 @@ import java.util.Date;
 public class WorkoutCheckDTO {
     @Data
     public static class WorkoutCheckRequest {
-        private String uniqueKey;
         private Date checkedDay;
+        private String workoutType;
+        private String workoutName;
+    }
+
+    @Data
+    public static class WorkoutCheckUpdateRequest {
+        private Date checkedDay;
+        private Long workoutId;
         private String workoutType;
         private String workoutName;
     }
@@ -18,9 +25,8 @@ public class WorkoutCheckDTO {
     @Data
     @AllArgsConstructor
     public static class ResponseWorkoutCheck {
-        private Long id;
-        private String uniqueKey;
         private Date checkedDay;
+        private Long id;
         private String workoutType;
         private String workoutName;
 
@@ -29,7 +35,6 @@ public class WorkoutCheckDTO {
             this.checkedDay = workoutCheck.getCheckedDay();
             this.workoutType = workoutCheck.getWorkoutType();
             this.workoutName = workoutCheck.getWorkoutName();
-            this.uniqueKey = workoutCheck.getChild().getUniqueKey();
         }
     }
 }

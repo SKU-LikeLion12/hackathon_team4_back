@@ -29,10 +29,15 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
+    public WorkoutCheck findById(PersonChild personChild, Long id) {
+        return em.find(WorkoutCheck.class, id);
+    }
+
+    @Override
     public List<WorkoutCheck> findByChild(PersonChild personChild) {
         try {
-            return em.createQuery("select w from WorkoutCheck w where w.uniqueKey = :uniqueKey",WorkoutCheck.class)
-                    .setParameter("uniqueKey", personChild.getUniqueKey())
+            return em.createQuery("select w from WorkoutCheck w where w.child = :child",WorkoutCheck.class)
+                    .setParameter("child", personChild)
                     .getResultList();
         } catch (Exception e) {
             return null;
@@ -42,11 +47,12 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     @Override
     public List<WorkoutCheck> findByDate(PersonChild child, Date date) {
         try {
-            return em.createQuery("select w from WorkoutCheck w where w.checkedDay = :day and w.uniqueKey = :uniqueKey",WorkoutCheck.class)
+            return em.createQuery("select w from WorkoutCheck w where w.checkedDay = :day and w.child = :child",WorkoutCheck.class)
                     .setParameter("day", date)
-                    .setParameter("uniqueKey", child.getUniqueKey())
+                    .setParameter("child", child)
                     .getResultList();
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -54,9 +60,9 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     @Override
     public List<WorkoutCheck> findByType(PersonChild child ,String type) {
         try {
-            return em.createQuery("select w from WorkoutCheck w where w.workoutType = :type and w.uniqueKey = :uniqueKey",WorkoutCheck.class)
+            return em.createQuery("select w from WorkoutCheck w where w.workoutType = :type and w.child = :child",WorkoutCheck.class)
                     .setParameter("type", type)
-                    .setParameter("uniqueKey", child.getUniqueKey())
+                    .setParameter("child", child)
                     .getResultList();
         } catch (Exception e) {
             return null;
@@ -66,9 +72,9 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     @Override
     public List<WorkoutCheck> findByName(PersonChild child, String name) {
         try {
-            return em.createQuery("select w from WorkoutCheck w where w.workoutName = :name and w.uniqueKey = :uniqueKey",WorkoutCheck.class)
+            return em.createQuery("select w from WorkoutCheck w where w.workoutName = :name and w.child = :child",WorkoutCheck.class)
                     .setParameter("name", name)
-                    .setParameter("uniqueKey", child.getUniqueKey())
+                    .setParameter("child", child)
                     .getResultList();
         } catch (Exception e) {
             return null;
@@ -78,9 +84,9 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     @Override
     public WorkoutCheck find(PersonChild child, Date date, String type, String name){
         try {
-            return em.createQuery("select w from WorkoutCheck w where w.uniqueKey = :uniqueKey and w.checkedDay = :date and w.workoutType = :type and w.workoutName = :name",WorkoutCheck.class)
+            return em.createQuery("select w from WorkoutCheck w where w.child = :child and w.checkedDay = :date and w.workoutType = :type and w.workoutName = :name",WorkoutCheck.class)
                     .setParameter("name", name)
-                    .setParameter("uniqueKey", child.getUniqueKey())
+                    .setParameter("child", child)
                     .setParameter("date", date)
                     .setParameter("type", type)
                     .getSingleResult();
