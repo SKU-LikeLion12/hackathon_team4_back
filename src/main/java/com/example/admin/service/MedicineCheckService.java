@@ -109,4 +109,5 @@ public class MedicineCheckService {
         return new IntakeRate(intakeRate);
     }
 
+
 }

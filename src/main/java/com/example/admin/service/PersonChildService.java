@@ -7,6 +7,9 @@ import com.example.admin.domain.PersonChild;
 import com.example.admin.repository.PersonChildRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,10 +27,29 @@ public class PersonChildService {
     public PersonChild createChild(String name, String gender, String birthDate, double height, double weight, String token) {
         Parents parent = parentsService.tokenToParents(token);
         String uniqueKey = generateUniqueKey();
-        PersonChild newChild = new PersonChild(name, gender, birthDate, height, weight, uniqueKey, parent);
+        Long age = calculateAge(birthDate);
+        double bmi = calculateBmi(height, weight);
+
+        PersonChild newChild = new PersonChild(name, gender, birthDate, height, weight,bmi,age, uniqueKey, parent);
+        newChild.setAge(age);
+        newChild.setBmi(bmi);
         personChildRepository.save(newChild);
         return newChild;
     }
+
+    private Long calculateAge(String birthDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate birth = LocalDate.parse(birthDate, formatter);
+        LocalDate now = LocalDate.now();
+        return (long) Period.between(birth, now).getYears();
+    }
+
+    private double calculateBmi(double height, double weight) {
+        // Convert height from centimeters to meters
+        double heightInMeters = height / 100.0;
+        return weight / (heightInMeters * heightInMeters);
+    }
+
 
     private String generateUniqueKey() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 8);

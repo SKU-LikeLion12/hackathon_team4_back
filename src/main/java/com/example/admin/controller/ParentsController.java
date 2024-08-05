@@ -31,6 +31,7 @@ public class ParentsController {
         if(parents == null) return "이미 존재";
         String token = parentsService.login(request.getUserId(), request.getPassword());
         parents.setToken(token);
+//        String token = "제발,,,,"
         return token;
     }
 
@@ -58,14 +59,17 @@ public class ParentsController {
         parentsService.deleteParents(request.getToken());
     }
 
-    @GetMapping("/parents/child/{userId}")
-    public List<ResponsePersonChild> getChlids(@PathVariable("userId") String userId){
-        List<ResponsePersonChild> responseChilds = new ArrayList<>();
-        Parents parents = parentsService.findByUserId(userId);
+    @GetMapping("/parents/child")
+    public List<ResponsePersonChild> getChlids(@RequestHeader("Authorization") String authorizationHeader){
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        List<ResponsePersonChild> responseChildren = new ArrayList<>();
+        Parents parents = parentsService.tokenToParents(token);
         if(parents == null) return null;
         for(PersonChild personChild : personChildService.findChildByParentId(parents.getId())) {
-            responseChilds.add(new ResponsePersonChild(personChild));
+            responseChildren.add(new ResponsePersonChild(personChild));
         }
-        return responseChilds;
+        return responseChildren;
     }
 }
