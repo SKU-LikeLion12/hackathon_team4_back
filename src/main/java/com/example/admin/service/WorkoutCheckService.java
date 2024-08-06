@@ -24,8 +24,6 @@ public class WorkoutCheckService {
     public WorkoutCheck create(String token, LocalDate date, String type, String name) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if (personChild == null) return null;
-        WorkoutCheck workoutCheck = find(token, date, type, name);
-        if(workoutCheck != null) return null;
         return workoutCheckReopsitory.create(new WorkoutCheck(personChild, date, type, name));
     }
 

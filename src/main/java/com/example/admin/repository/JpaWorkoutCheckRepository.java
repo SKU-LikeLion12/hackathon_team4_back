@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
-    public void delete(PersonChild child, Date date, String type, String name){
+    public void delete(PersonChild child, LocalDate date, String type, String name){
         WorkoutCheck workoutCheck = find(child, date, type, name);
         if(workoutCheck == null) return;
         em.remove(workoutCheck);
@@ -45,7 +46,7 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
-    public List<WorkoutCheck> findByDate(PersonChild child, Date date) {
+    public List<WorkoutCheck> findByDate(PersonChild child, LocalDate date) {
         try {
             return em.createQuery("select w from WorkoutCheck w where w.checkedDay = :day and w.child = :child",WorkoutCheck.class)
                     .setParameter("day", date)
@@ -82,7 +83,7 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
-    public WorkoutCheck find(PersonChild child, Date date, String type, String name){
+    public WorkoutCheck find(PersonChild child, LocalDate date, String type, String name){
         try {
             return em.createQuery("select w from WorkoutCheck w where w.child = :child and w.checkedDay = :date and w.workoutType = :type and w.workoutName = :name",WorkoutCheck.class)
                     .setParameter("name", name)

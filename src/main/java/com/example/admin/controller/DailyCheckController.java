@@ -56,25 +56,25 @@ public class DailyCheckController {
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    @GetMapping("/dailycheck/{date}")
+    @GetMapping("/dailycheck-checkday")
     public ResponseDailyCheck getDailyCheckByDate(
-            @RequestHeader("Authorization") String authorizationHeader
-            ,@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate checkedDay) {
         String token = authorizationHeader.replace("Bearer ", "");
-        DailyCheck dailyCheck = dailyCheckService.findByDate(date, token);
+        DailyCheck dailyCheck = dailyCheckService.findByDate(checkedDay, token);
         if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    @GetMapping("/dailycheck/{id}")
-    public ResponseDailyCheck getDailyCheckByDate(
-            @RequestHeader("Authorization") String authorizationHeader
-            ,@PathVariable("id") Long id) {
-        String token = authorizationHeader.replace("Bearer ", "");
-        DailyCheck dailyCheck = dailyCheckService.findById(id, token);
-        if(dailyCheck == null) return null;
-        return new ResponseDailyCheck(dailyCheck);
-    }
+    //@GetMapping("/dailycheck/{id}")
+    //public ResponseDailyCheck getDailyCheckByDate(
+    //        @RequestHeader("Authorization") String authorizationHeader
+    //        ,@PathVariable("id") Long id) {
+    //    String token = authorizationHeader.replace("Bearer ", "");
+    //    DailyCheck dailyCheck = dailyCheckService.findById(id, token);
+    //    if(dailyCheck == null) return null;
+    //    return new ResponseDailyCheck(dailyCheck);
+    //}
 
     @GetMapping("/dailycheck")
     public List<ResponseDailyCheck> getAllDailyCheck(@RequestHeader("Authorization") String authorizationHeader) {
@@ -96,7 +96,7 @@ public class DailyCheckController {
 
     @GetMapping("/child-daily-check")
     public ResponseDailyCheck getChildDailyCheck(
-            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate checkedDay,
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkedDay,
             @RequestHeader("Authorization") String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");

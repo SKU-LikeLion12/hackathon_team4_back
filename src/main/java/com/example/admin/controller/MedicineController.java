@@ -24,7 +24,6 @@ public class MedicineController {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
-
         if(medicineService.addMedicine(request, token) == 1){
             return ResponseEntity.status(HttpStatus.CREATED).body("Success");
         }

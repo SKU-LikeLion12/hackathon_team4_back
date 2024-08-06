@@ -26,6 +26,7 @@ public class PersonChildService {
     @Transactional
     public PersonChild createChild(String name, String gender, String birthDate, double height, double weight, String token) {
         Parents parent = parentsService.tokenToParents(token);
+        if(parent == null) return null;
         String uniqueKey = generateUniqueKey();
         Long age = calculateAge(birthDate);
         double bmi = calculateBmi(height, weight);
