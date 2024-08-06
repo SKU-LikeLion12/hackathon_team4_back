@@ -5,6 +5,7 @@ import com.example.admin.domain.PersonChild;
 import com.example.admin.domain.ScheduleMedicine;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.web.embedded.TomcatVirtualThreadsWebServerFactoryCustomizer;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Repository
 public class JpaScheduleMedicine implements ScheduleMedicineRepository {
     private final EntityManager em;
+    private final TomcatVirtualThreadsWebServerFactoryCustomizer tomcatVirtualThreadsProtocolHandlerCustomizer;
 
     @Override
     public void addSchedule(ScheduleMedicine scheduleMedicine) {
@@ -22,9 +24,14 @@ public class JpaScheduleMedicine implements ScheduleMedicineRepository {
 
     @Override
     public List<ScheduleMedicine> getSchedule(PersonChild personChild) {
-        return em.createQuery( "select sm from ScheduleMedicine sm where sm.personChild = :pc " , ScheduleMedicine.class)
-                .setParameter("pc",personChild)
-                .getResultList();
+        try {
+            return em.createQuery( "select sm from ScheduleMedicine sm where sm.personChild = :pc " , ScheduleMedicine.class)
+                    .setParameter("pc",personChild)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

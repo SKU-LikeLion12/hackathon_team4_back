@@ -40,6 +40,7 @@ public class MedicineService {
 
     public List<Medicine> getMedicine(MedicineDTO.RequestGetMedicine request) {
         Parents parents = parentsService.tokenToParents(request.getToken());
+        if(parents == null) return null;
         return medicineRepository.getMedicine(parents);
 
     }

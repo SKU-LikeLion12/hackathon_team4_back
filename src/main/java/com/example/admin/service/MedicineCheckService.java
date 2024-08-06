@@ -79,7 +79,6 @@ public class MedicineCheckService {
     public IntakeRate calculateIntakeRateForChild(String token) {
         PersonChild child = personChildService.tokenToChild(token);
 
-
         List<ScheduleMedicine> scheduleMedicines = scheduleMedicineRepository.getSchedule(child);
 
         int totalDoses = 0;
@@ -121,6 +120,8 @@ public class MedicineCheckService {
 
         // 2. 부모의 자녀를 가져옴 (1:1 관계)
         PersonChild child = personChildRepository.findByParent(parent);
+
+        if(child == null) return null;
 
         // 3. 자녀의 ScheduleMedicine 및 MedicineCheck를 비교하여 복용 여부를 확인
         List<MedicineCheckResponseDTO> responseList = new ArrayList<>();

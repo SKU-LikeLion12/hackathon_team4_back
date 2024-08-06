@@ -5,6 +5,7 @@ import com.example.admin.DTO.MedicineDTO;
 import com.example.admin.DTO.ScheduleMedicineDTO;
 import com.example.admin.domain.Medicine;
 import com.example.admin.domain.ScheduleMedicine;
+import com.example.admin.service.PersonChildService;
 import com.example.admin.service.ScheduleMedicineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ScheduleMedicineController {
 
     private final ScheduleMedicineService scheduleMedicineService;
+    private final PersonChildService personChildService;
 
 
     @PostMapping("/schedule/add")
@@ -28,7 +30,7 @@ public class ScheduleMedicineController {
 
         // "Bearer " 접두사 제거
         String token = authorizationHeader.replace("Bearer ", "");
-
+        if (personChildService.tokenToChild(token) == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         if (scheduleMedicineService.addSchedule(token, request) == 1) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Success");
         }
@@ -40,7 +42,7 @@ public class ScheduleMedicineController {
     public ResponseEntity<List<ScheduleMedicineDTO.ResponseSchedule>> getScheduleMedicine(@RequestHeader("Authorization") String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");
-
+        if(personChildService.tokenToChild(token) == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         List<ScheduleMedicineDTO.ResponseSchedule> response = new ArrayList<>();
         for( ScheduleMedicine sm : scheduleMedicineService.getSchedule(token) ){
             response.add(new ScheduleMedicineDTO.ResponseSchedule(sm));

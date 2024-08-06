@@ -7,7 +7,7 @@ import lombok.Data;
 public class MedicineDTO {
 
     @Data
-    public static class RequestMedicine{
+        public static class RequestMedicine{
         private String name;
     }
 

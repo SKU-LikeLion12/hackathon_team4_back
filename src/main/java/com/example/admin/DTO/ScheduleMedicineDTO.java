@@ -6,7 +6,7 @@ import lombok.Data;
 public class ScheduleMedicineDTO {
 
     @Data
-    public static class RequestSchedule {
+        public static class RequestSchedule {
         private String title;
         private boolean morning;
         private boolean lunch;

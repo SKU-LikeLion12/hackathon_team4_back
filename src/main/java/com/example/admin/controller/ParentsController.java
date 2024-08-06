@@ -107,6 +107,7 @@ public class ParentsController {
         // Bearer 토큰에서 실제 토큰 값만 추출
         String token = authorizationHeader.replace("Bearer ", "");
 
+        if(parentsService.tokenToParents(token) == null) return null;
         // 부모 토큰을 이용해 자녀의 복용 상태를 확인
         return medicineCheckService.getChildMedicineCheck(token);
     }
