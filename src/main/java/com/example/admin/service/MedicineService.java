@@ -22,7 +22,6 @@ public class MedicineService {
 
     @Transactional
     public int addMedicine(List<MedicineDTO.RequestMedicine>  request, String token) {
-
         try{
             for (MedicineDTO.RequestMedicine medicineDTO : request) {
                 Parents parents = parentsService.tokenToParents(token);
@@ -33,8 +32,6 @@ public class MedicineService {
         }catch (Exception e){
             return 0;
         }
-
-
     }
 
 

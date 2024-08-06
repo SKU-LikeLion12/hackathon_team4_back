@@ -78,6 +78,7 @@ public class MedicineCheckService {
 
     public IntakeRate calculateIntakeRateForChild(String token) {
         PersonChild child = personChildService.tokenToChild(token);
+        if(child == null) return null;
 
         List<ScheduleMedicine> scheduleMedicines = scheduleMedicineRepository.getSchedule(child);
 
