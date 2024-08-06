@@ -18,9 +18,14 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @PostMapping("/medicine/add")
-    public ResponseEntity<String> addMedicine(@RequestBody List<MedicineDTO.RequestMedicine> request) {
+    public ResponseEntity<String> addMedicine(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody List<MedicineDTO.RequestMedicine> request) {
 
-        if(medicineService.addMedicine(request) == 1 ){
+        String token = authorizationHeader.replace("Bearer ", "");
+
+
+        if(medicineService.addMedicine(request, token) == 1){
             return ResponseEntity.status(HttpStatus.CREATED).body("Success");
         }
         return ResponseEntity.ok("Fail");

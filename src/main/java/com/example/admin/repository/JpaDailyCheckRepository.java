@@ -7,6 +7,7 @@ import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class JpaDailyCheckRepository implements DailyCheckRepository {
     private final PersonChildRepository personChildRepository;
 
     @Override
-    public DailyCheck create(DailyCheck dailyCheck){
+    public DailyCheck create(DailyCheck dailyCheck) {
         em.persist(dailyCheck);
         return dailyCheck;
     }
@@ -33,22 +34,33 @@ public class JpaDailyCheckRepository implements DailyCheckRepository {
     }
 
     @Override
-    public boolean deleteDailyCheck(Date date, PersonChild child) {
+    public boolean deleteDailyCheck(LocalDate date, PersonChild child) {
         DailyCheck dailyCheck = findByDate(date, child);
-        if(dailyCheck == null) return false;
+        if (dailyCheck == null) return false;
         em.remove(dailyCheck);
         return true;
     }
 
     @Override
-    public List<DailyCheck> findByUserAll(PersonChild child){
+    public List<DailyCheck> findByUserAll(PersonChild child) {
         return em.createQuery("select d from DailyCheck d where d.child = :child", DailyCheck.class)
                 .setParameter("child", child)
                 .getResultList();
     }
 
+    //    @Override
+//    public DailyCheck findByDate(Date date, PersonChild child){
+//        try {
+//            return em.createQuery("select d from DailyCheck d where d.checkedDay = :checkedDay and d.child = :child", DailyCheck.class)
+//                    .setParameter("checkedDay", date)
+//                    .setParameter("child", child)
+//                    .getSingleResult();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//
     @Override
-    public DailyCheck findByDate(Date date, PersonChild child){
+    public DailyCheck findByDate(LocalDate date, PersonChild child) {
         try {
             return em.createQuery("select d from DailyCheck d where d.checkedDay = :checkedDay and d.child = :child", DailyCheck.class)
                     .setParameter("checkedDay", date)

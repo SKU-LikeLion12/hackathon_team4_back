@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,18 +19,42 @@ import java.util.List;
 public class DailyCheckController {
     private final DailyCheckService dailyCheckService;
     private final PersonChildService personChildService;
- 
+
+//    @PostMapping("/dailycheck/add")
+//    public ResponseDailyCheck addDailyCheck(
+//            @RequestHeader("Authorization") String authorizationHeader,
+//            @RequestBody DailyCheckRequest request) {
+//        String token = authorizationHeader.replace("Bearer ", "");
+//        PersonChild personChild = personChildService.tokenToChild(token);
+//        if(personChild == null) return null;
+//        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
+//        if(dailyCheck == null) return null;
+//        return new ResponseDailyCheck(dailyCheck);
+
+//    }
+
+
     @PostMapping("/dailycheck/add")
     public ResponseDailyCheck addDailyCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody DailyCheckRequest request) {
+            @RequestBody DailyCheckUpdateRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
-        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
+        DailyCheck dailyCheck = dailyCheckService.create(
+                request.getCheckedDay(),
+                token,
+                request.isNiceSleepDay(),
+                request.isHardWorkout(),
+                request.isTakingMedicine(),
+                request.isNiceDailyMood()
+        );
         if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
+
+
+
 
     @PutMapping("/dailycheck/update")
     public ResponseDailyCheck updateDailyCheck(
@@ -51,7 +76,7 @@ public class DailyCheckController {
     @GetMapping("/dailycheck/{date}")
     public ResponseDailyCheck getDailyCheckByDate(
             @RequestHeader("Authorization") String authorizationHeader
-            ,@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+            ,@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         String token = authorizationHeader.replace("Bearer ", "");
         DailyCheck dailyCheck = dailyCheckService.findByDate(date, token);
         if(dailyCheck == null) return null;
@@ -85,5 +110,21 @@ public class DailyCheckController {
         String token = authorizationHeader.replace("Bearer ", "");
         return dailyCheckService.delete(request.getCheckedDay(), token);
     }
+
+    @GetMapping("/child-daily-check")
+    public ResponseDailyCheck getChildDailyCheck(
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate checkedDay,
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        DailyCheck dailyCheck = dailyCheckService.getChildDailyCheck(token, checkedDay);
+
+        if (dailyCheck == null) {
+//            throw new RuntimeException("Daily Check not found for the given date");
+            return null;
+        }
+
+        return new ResponseDailyCheck(dailyCheck);
+    }
 }
- 

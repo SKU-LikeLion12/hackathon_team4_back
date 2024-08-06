@@ -1,9 +1,12 @@
 package com.example.admin.controller;
 
+import com.example.admin.DTO.MedicineCheckDTO;
 import com.example.admin.DTO.ParentsDTO.*;
 import com.example.admin.DTO.PersonChildDTO.*;
+import com.example.admin.domain.MedicineCheck;
 import com.example.admin.domain.Parents;
 import com.example.admin.domain.PersonChild;
+import com.example.admin.service.MedicineCheckService;
 import com.example.admin.service.ParentsService;
 import com.example.admin.service.PersonChildService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +23,8 @@ import java.util.List;
 public class ParentsController {
     private final ParentsService parentsService;
     private final PersonChildService personChildService;
+    private final MedicineCheckService medicineCheckService;
+
 
     @Operation(summary = "회원가입", description = "아이디와 비밀번호, 닉네임을 입력하고 회원가입 시도", tags=("user"),
             responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 토큰 반환"),
@@ -69,16 +74,42 @@ public class ParentsController {
         return parentsService.deleteParents(token);
     }
 
-    @GetMapping("/parents/child")
+    @GetMapping("/parents/childs")
     public List<ResponsePersonChild> getChlids(
             @RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.replace("Bearer ", "");
-        List<ResponsePersonChild> responseChilds = new ArrayList<>();
+        List<ResponsePersonChild> responseChildren = new ArrayList<>();
         Parents parents = parentsService.tokenToParents(token);
         if(parents == null) return null;
         for(PersonChild personChild : personChildService.findChildByParentsUserId(parents.getUser_id())) {
-            responseChilds.add(new ResponsePersonChild(personChild));
+            responseChildren.add(new ResponsePersonChild(personChild));
         }
-        return responseChilds;
+        return responseChildren;
     }
+
+    @GetMapping("/parents/child")
+    public ResponsePersonChild getChild(
+            @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        Parents parents = parentsService.tokenToParents(token);
+
+        if (parents == null) {
+            return null;
+        }
+        PersonChild personChild = personChildService.findChildByParent(parents);
+        return new ResponsePersonChild(personChild);
+    }
+
+
+    @GetMapping("/child-medicine-check")
+    public List<MedicineCheckDTO.MedicineCheckResponseDTO> getChildMedicineCheck(@RequestHeader("Authorization") String authorizationHeader) {
+        // Bearer 토큰에서 실제 토큰 값만 추출
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        // 부모 토큰을 이용해 자녀의 복용 상태를 확인
+        return medicineCheckService.getChildMedicineCheck(token);
+    }
+
+
 }

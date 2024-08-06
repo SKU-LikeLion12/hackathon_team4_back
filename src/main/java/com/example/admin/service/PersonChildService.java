@@ -47,7 +47,7 @@ public class PersonChildService {
     private double calculateBmi(double height, double weight) {
         // Convert height from centimeters to meters
         double heightInMeters = height / 100.0;
-        return weight / (heightInMeters * heightInMeters);
+        return Double.parseDouble(String.format("%.1f", weight / (heightInMeters * heightInMeters)));
     }
 
 
@@ -80,6 +80,10 @@ public class PersonChildService {
 
     public PersonChild tokenToChild(String token) {
         return personChildRepository.findByUniqueKey(jwtUtility.validateToken(token).getSubject());
+    }
+
+    public PersonChild findChildByParent(Parents parent) {
+        return personChildRepository.findByParent(parent);
     }
 
 }

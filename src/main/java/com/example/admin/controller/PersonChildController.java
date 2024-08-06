@@ -40,9 +40,11 @@ public class PersonChildController {
     @GetMapping("/child/uniqueKey")
     //findChildByUniqueKey 테스트용
     //uniqueKey하나 들어가는데 굳이 request 만들지 말자
-    public ResponsePersonChild findChildByUniqueKey(@RequestBody Map<String, String> uniqueKey) {
+    public ResponsePersonChild findChildByUniqueKey(@RequestHeader("Authorization") String authorizationHeader)
+    {
 //      log.info("UniqueKey : {}", uniqueKey.get("uniqueKey"));
-        PersonChild child = personChildService.findChildByUniqueKey(uniqueKey.get("uniqueKey"));
+        String token = authorizationHeader.replace("Bearer ", "");
+        PersonChild child = personChildService.tokenToChild(token);
         if (child == null) {
             return null;
         }

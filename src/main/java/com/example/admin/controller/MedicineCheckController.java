@@ -38,4 +38,9 @@ public class MedicineCheckController {
         return medicineCheckService.calculateIntakeRateForChild(token);
     }
 
+    @PostMapping("/reset")
+    public void resetAllMedicineIntakes() {
+        medicineCheckService.resetAllMedicineIntakes();
+    }
+
 }

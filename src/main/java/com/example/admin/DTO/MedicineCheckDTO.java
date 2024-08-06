@@ -34,4 +34,13 @@ public class MedicineCheckDTO {
     public static class IntakeRate {
         private double Rate;
     }
+
+    @Data
+    public static class MedicineCheckResponseDTO {
+        private Long id; // ScheduleMedicine ID
+        private String name; // Medicine name
+        private Boolean morning; // Morning taken status
+        private Boolean lunch; // Lunch taken status
+        private Boolean dinner; // Dinner taken status
+    }
 }
