@@ -83,7 +83,7 @@ public class DailyCheckService {
     }
 
 
-    @Transactional
+
     public boolean delete(LocalDate date, String token) {
         DailyCheck dailyCheck = findByDate(date, token);
         PersonChild personChild = personChildService.tokenToChild(token);

@@ -46,12 +46,27 @@ public class JpaWorkoutCheckRepository implements WorkoutCheckReopsitory{
     }
 
     @Override
-    public List<WorkoutCheck> findByDate(PersonChild child, LocalDate date) {
+    public List<WorkoutCheck> findByDates(PersonChild child, LocalDate date) {
         try {
             return em.createQuery("select w from WorkoutCheck w where w.checkedDay = :day and w.child = :child",WorkoutCheck.class)
                     .setParameter("day", date)
                     .setParameter("child", child)
                     .getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    @Override
+    public WorkoutCheck findByDate(PersonChild child, LocalDate date) {
+        try {
+            return em.createQuery("select w from WorkoutCheck w where w.checkedDay = :day and w.child = :child",WorkoutCheck.class)
+                    .setParameter("day", date)
+                    .setParameter("child", child)
+                    .getSingleResult();
         }catch (Exception e){
             e.printStackTrace();
             return null;
