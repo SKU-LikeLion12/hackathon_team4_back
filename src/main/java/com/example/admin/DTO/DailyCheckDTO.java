@@ -11,11 +11,6 @@ public class DailyCheckDTO {
     @Data
     public static class DailyCheckRequest {
         private LocalDate checkedDay;
-    }
-
-    @Data
-    public static class DailyCheckUpdateRequest {
-        private LocalDate checkedDay;
         private boolean niceSleepDay;
         private boolean hardWorkout;
         private boolean takingMedicine;

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -23,11 +24,11 @@ public class WorkoutCheck {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PersonChild child;
 
-    private Date checkedDay;
+    private LocalDate checkedDay;
     private String workoutType;
     private String workoutName;
 
-    public WorkoutCheck(PersonChild child, Date checkedDay, String workoutType, String workoutName){
+    public WorkoutCheck(PersonChild child, LocalDate checkedDay, String workoutType, String workoutName){
         this.child = child;
         this.checkedDay = checkedDay;
         this.workoutType = workoutType;

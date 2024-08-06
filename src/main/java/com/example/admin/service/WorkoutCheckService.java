@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class WorkoutCheckService {
     private final PersonChildService personChildService;
 
     @Transactional
-    public WorkoutCheck create(String token, Date date, String type, String name) {
+    public WorkoutCheck create(String token, LocalDate date, String type, String name) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if (personChild == null) return null;
         WorkoutCheck workoutCheck = find(token, date, type, name);
@@ -29,7 +30,7 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public WorkoutCheck update(String token, Long id, Date date, String type, String name) {
+    public WorkoutCheck update(String token, Long id, LocalDate date, String type, String name) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if (personChild == null) return null;
         WorkoutCheck workoutCheck = workoutCheckReopsitory.findById(personChild , id);
@@ -41,7 +42,7 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public boolean delete(String token, Date date, String type, String name) {
+    public boolean delete(String token, LocalDate date, String type, String name) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return false;
         workoutCheckReopsitory.delete(personChild, date, type, name);
@@ -56,7 +57,7 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public List<WorkoutCheck> findByDate(String token, Date date) {
+    public List<WorkoutCheck> findByDate(String token, LocalDate date) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.findByDate(personChild, date);
@@ -77,7 +78,7 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public WorkoutCheck find(String token, Date date, String type, String name) {
+    public WorkoutCheck find(String token, LocalDate date, String type, String name) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         return workoutCheckReopsitory.find(personChild, date, type, name);

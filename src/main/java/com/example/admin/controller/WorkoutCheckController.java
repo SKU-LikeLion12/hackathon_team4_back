@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +84,7 @@ public class WorkoutCheckController {
     @GetMapping("/workoutcheck/{date}")
     public List<ResponseWorkoutCheck> getWorkoutCheckByDate(
             @RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         String token = authorizationHeader.replace("Bearer ", "");
         System.out.println("Authorization token: " + token);
         System.out.println("Date parameter: " + date);
@@ -120,7 +121,7 @@ public class WorkoutCheckController {
 
     @GetMapping("/workoutcheck/{date}/{type}/{name}")
     public ResponseWorkoutCheck getWorkoutCheck(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                                            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
                                                             @PathVariable("type") String type,
                                                             @PathVariable("name") String name) {
         String token = authorizationHeader.replace("Bearer ", "");

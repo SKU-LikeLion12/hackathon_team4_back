@@ -20,24 +20,10 @@ public class DailyCheckController {
     private final DailyCheckService dailyCheckService;
     private final PersonChildService personChildService;
 
-//    @PostMapping("/dailycheck/add")
-//    public ResponseDailyCheck addDailyCheck(
-//            @RequestHeader("Authorization") String authorizationHeader,
-//            @RequestBody DailyCheckRequest request) {
-//        String token = authorizationHeader.replace("Bearer ", "");
-//        PersonChild personChild = personChildService.tokenToChild(token);
-//        if(personChild == null) return null;
-//        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
-//        if(dailyCheck == null) return null;
-//        return new ResponseDailyCheck(dailyCheck);
-
-//    }
-
-
     @PostMapping("/dailycheck/add")
     public ResponseDailyCheck addDailyCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody DailyCheckUpdateRequest request) {
+            @RequestBody DailyCheckRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
@@ -53,13 +39,10 @@ public class DailyCheckController {
         return new ResponseDailyCheck(dailyCheck);
     }
 
-
-
-
     @PutMapping("/dailycheck/update")
     public ResponseDailyCheck updateDailyCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody DailyCheckUpdateRequest request) {
+            @RequestBody DailyCheckRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
