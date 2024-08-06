@@ -66,16 +66,6 @@ public class DailyCheckController {
         return new ResponseDailyCheck(dailyCheck);
     }
 
-    //@GetMapping("/dailycheck/{id}")
-    //public ResponseDailyCheck getDailyCheckByDate(
-    //        @RequestHeader("Authorization") String authorizationHeader
-    //        ,@PathVariable("id") Long id) {
-    //    String token = authorizationHeader.replace("Bearer ", "");
-    //    DailyCheck dailyCheck = dailyCheckService.findById(id, token);
-    //    if(dailyCheck == null) return null;
-    //    return new ResponseDailyCheck(dailyCheck);
-    //}
-
     @GetMapping("/dailycheck")
     public List<ResponseDailyCheck> getAllDailyCheck(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
