@@ -35,6 +35,12 @@ public class JpaPersonChildRepository implements PersonChildRepository {
     }
 
     @Override
+    public PersonChild findByParent(Parents parent) {
+        return em.createQuery("select c from PersonChild c where c.parent = :p", PersonChild.class)
+                .setParameter("p", parent).getSingleResult();
+    }
+
+    @Override
     public void flush() {
 
     }

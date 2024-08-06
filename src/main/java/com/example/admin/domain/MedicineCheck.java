@@ -30,24 +30,6 @@ public class MedicineCheck {
         this.dinnerTaken = false;
     }
 
-    public void takeMorningMedicine() {
-        if (scheduleMedicine.getMorning()) {
-            this.morningTaken = true;
-        }
-    }
-
-    public void takeLunchMedicine() {
-        if (scheduleMedicine.getLunch()) {
-            this.lunchTaken = true;
-        }
-    }
-
-    public void takeDinnerMedicine() {
-        if (scheduleMedicine.getDinner()) {
-            this.dinnerTaken = true;
-        }
-    }
-
     public void resetMedicineIntake() {
         this.morningTaken = false;
         this.lunchTaken = false;

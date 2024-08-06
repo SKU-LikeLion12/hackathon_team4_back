@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class WorkoutCheckController {
     }
 
     @PutMapping("/workoutcheck/update")
-    public ResponseWorkoutCheck updateWorkoutCheck(
+    public ResponseWorkoutCheck updateWorkoutCheck( // 안씀
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody WorkoutCheckUpdateRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
@@ -80,10 +81,10 @@ public class WorkoutCheckController {
         return response;
     }
 
-    @GetMapping("/workoutcheck/{date}")
+    @GetMapping("/workoutcheck-checkedDay")
     public List<ResponseWorkoutCheck> getWorkoutCheckByDate(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+            @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
         System.out.println("Authorization token: " + token);
         System.out.println("Date parameter: " + date);
@@ -96,33 +97,11 @@ public class WorkoutCheckController {
         return response;
     }
 
-    //@GetMapping("/workoutcheck/{uniqueKey}/{type}")
-    //public List<ResponseWorkoutCheck> getWorkoutCheckByType(@PathVariable("uniqueKey") String uniqueKey, @PathVariable("type") String type) {
-    //    PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
-    //    if(personChild == null) return null;
-    //    List<ResponseWorkoutCheck> response = new ArrayList<>();
-    //    for(WorkoutCheck workoutCheck : workoutCheckService.findByType(uniqueKey, type)){
-    //        response.add(new ResponseWorkoutCheck(workoutCheck));
-    //    }
-    //    return response;
-    //}
-
-    //@GetMapping("/workoutcheck/{uniqueKey}/{name}")
-    //public List<ResponseWorkoutCheck> getWorkoutCheckByName(@PathVariable("uniqueKey") String uniqueKey, @PathVariable("name") String name) {
-    //    PersonChild personChild = personChildRepository.findByUniqueKey(uniqueKey);
-    //    if(personChild == null) return null;
-    //    List<ResponseWorkoutCheck> response = new ArrayList<>();
-    //    for(WorkoutCheck workoutCheck : workoutCheckService.findByName(uniqueKey, name)){
-    //        response.add(new ResponseWorkoutCheck(workoutCheck));
-    //    }
-    //    return response;
-    //}
-
-    @GetMapping("/workoutcheck/{date}/{type}/{name}")
+    @GetMapping("/workoutcheck/{type}/{name}")
     public ResponseWorkoutCheck getWorkoutCheck(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                            @PathVariable("type") String type,
-                                                            @PathVariable("name") String name) {
+                                                @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate date,
+                                                @PathVariable("type") String type,
+                                                @PathVariable("name") String name) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;

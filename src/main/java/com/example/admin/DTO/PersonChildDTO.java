@@ -12,6 +12,8 @@ public class PersonChildDTO {
         private String birthDate;
         private double height;
         private double weight;
+        private Long age;
+        private double bmi;
         private String uniqueKey;
 
         public ResponsePersonChild(PersonChild personChild) {
@@ -22,6 +24,8 @@ public class PersonChildDTO {
             this.height = personChild.getHeight();
             this.weight = personChild.getWeight();
             this.uniqueKey = personChild.getUniqueKey();
+            this.bmi = personChild.getBmi();
+            this.age = personChild.getAge();
         }
     }
 

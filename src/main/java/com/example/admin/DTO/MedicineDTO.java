@@ -8,7 +8,6 @@ public class MedicineDTO {
 
     @Data
     public static class RequestMedicine{
-        private String token;
         private String name;
     }
 

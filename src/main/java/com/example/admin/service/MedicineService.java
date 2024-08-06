@@ -21,11 +21,11 @@ public class MedicineService {
 
 
     @Transactional
-    public int addMedicine(List<MedicineDTO.RequestMedicine>  request) {
+    public int addMedicine(List<MedicineDTO.RequestMedicine>  request, String token) {
 
         try{
             for (MedicineDTO.RequestMedicine medicineDTO : request) {
-                Parents parents = parentsService.tokenToParents(medicineDTO.getToken());
+                Parents parents = parentsService.tokenToParents(token);
                 medicineRepository.addMedicine(  new Medicine(medicineDTO.getName(),parents)  ) ;
 
             }

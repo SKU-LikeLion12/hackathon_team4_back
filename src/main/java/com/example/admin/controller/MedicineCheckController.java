@@ -14,7 +14,6 @@ public class MedicineCheckController {
     private final MedicineCheckService medicineCheckService;
 
 
-
     @GetMapping("/{id}")
     public ResponseMedicineCheck getMedicineCheck(@PathVariable Long id) {
         return medicineCheckService.getMedicineCheck(id);
@@ -31,7 +30,6 @@ public class MedicineCheckController {
         medicineCheckService.toggleMedicineCheck(request);
     }
 
-
     // 복용량
     @GetMapping("/intake-rate")
     public IntakeRate getIntakeRate(@RequestHeader("Authorization") String authorizationHeader)
@@ -39,4 +37,10 @@ public class MedicineCheckController {
         String token = authorizationHeader.replace("Bearer ", "");
         return medicineCheckService.calculateIntakeRateForChild(token);
     }
+
+    @PostMapping("/reset")
+    public void resetAllMedicineIntakes() {
+        medicineCheckService.resetAllMedicineIntakes();
+    }
+
 }

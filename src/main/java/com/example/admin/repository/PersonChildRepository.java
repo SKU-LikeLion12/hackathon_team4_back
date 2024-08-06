@@ -11,4 +11,6 @@ public interface PersonChildRepository extends JpaRepository<PersonChild, Long> 
     PersonChild findByUniqueKey(String uniqueKey);
 
     List<PersonChild> findPersonChildByParent(Parents parents);
+
+    PersonChild findByParent(Parents parents);
 }
