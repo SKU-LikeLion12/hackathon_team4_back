@@ -58,9 +58,7 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public List<WorkoutCheck> findByDates(String token, LocalDate date) {
-        PersonChild personChild = personChildService.tokenToChild(token);
-        if(personChild == null) return null;
+    public List<WorkoutCheck> findByDates(PersonChild personChild, LocalDate date) {
         return workoutCheckReopsitory.findByDates(personChild, date);
     }
 
