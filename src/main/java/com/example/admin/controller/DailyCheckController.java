@@ -40,7 +40,7 @@ public class DailyCheckController {
     @PutMapping("/dailycheck/update")
     public ResponseDailyCheck updateDailyCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody DailyCheckUpdateRequest request) {
+            @RequestBody DailyCheckRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
