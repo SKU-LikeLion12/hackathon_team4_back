@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.StyledEditorKit;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +21,20 @@ public class DailyCheckService {
     private final PersonChildService personChildService;
 
     @Transactional
-    public DailyCheck create(Date date, String token) {
+    public DailyCheck create(Date date,
+                             String token,
+                             boolean niceSleepDay,
+                             boolean hardWorkout,
+                             boolean takingMedicine,
+                             boolean niceDailyMood) {
         DailyCheck dailyCheck = findByDate(date, token);
         if (dailyCheck != null) return null;
-        return dailyCheckRepository.create(new DailyCheck(date, personChildService.tokenToChild(token)));
+        dailyCheck = dailyCheckRepository.create(new DailyCheck(date, personChildService.tokenToChild(token)));
+        dailyCheck.updateSleep(niceSleepDay);
+        dailyCheck.updateHardWorkout(hardWorkout);
+        dailyCheck.updateTakingMedicine(takingMedicine);
+        dailyCheck.updateNiceDailyMood(niceDailyMood);
+        return dailyCheck;
     }
 
     @Transactional
@@ -48,7 +59,12 @@ public class DailyCheckService {
     }
 
     @Transactional
-    public DailyCheck update(Date date, String token, boolean niceSleepDay, boolean hardWorkout, boolean takingMedicine, boolean niceDailyMood) {
+    public DailyCheck update(Date date,
+                             String token,
+                             boolean niceSleepDay,
+                             boolean hardWorkout,
+                             boolean takingMedicine,
+                             boolean niceDailyMood) {
         DailyCheck dailyCheck = findByDate(date, token);
         if (dailyCheck == null) return null;
         dailyCheck.updateSleep(niceSleepDay);

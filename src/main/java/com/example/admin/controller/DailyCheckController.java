@@ -26,7 +26,13 @@ public class DailyCheckController {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
-        DailyCheck dailyCheck = dailyCheckService.create(request.getCheckedDay(), token);
+        DailyCheck dailyCheck = dailyCheckService.create(
+                request.getCheckedDay(),
+                token,
+                request.isNiceSleepDay(),
+                request.isHardWorkout(),
+                request.isTakingMedicine(),
+                request.isNiceDailyMood());
         if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
@@ -45,16 +51,6 @@ public class DailyCheckController {
                 request.isHardWorkout(),
                 request.isTakingMedicine(),
                 request.isNiceDailyMood());
-        return new ResponseDailyCheck(dailyCheck);
-    }
-
-    @GetMapping("/dailycheck/{date}")
-    public ResponseDailyCheck getDailyCheckByDate(
-            @RequestHeader("Authorization") String authorizationHeader
-            ,@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        String token = authorizationHeader.replace("Bearer ", "");
-        DailyCheck dailyCheck = dailyCheckService.findByDate(date, token);
-        if(dailyCheck == null) return null;
         return new ResponseDailyCheck(dailyCheck);
     }
 

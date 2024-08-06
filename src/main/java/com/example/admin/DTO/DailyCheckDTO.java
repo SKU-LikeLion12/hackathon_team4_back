@@ -10,6 +10,10 @@ public class DailyCheckDTO {
     @Data
     public static class DailyCheckRequest {
         private Date checkedDay;
+        private boolean niceSleepDay;
+        private boolean hardWorkout;
+        private boolean takingMedicine;
+        private boolean niceDailyMood;
     }
 
     @Data
