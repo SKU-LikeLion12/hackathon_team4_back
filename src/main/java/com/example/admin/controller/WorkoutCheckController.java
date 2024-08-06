@@ -1,5 +1,6 @@
 package com.example.admin.controller;
 
+import com.example.admin.DTO.WorkoutCheckDTO;
 import com.example.admin.DTO.WorkoutCheckDTO.*;
 import com.example.admin.domain.Parents;
 import com.example.admin.domain.PersonChild;
@@ -9,11 +10,13 @@ import com.example.admin.service.ParentsService;
 import com.example.admin.service.PersonChildService;
 import com.example.admin.service.WorkoutCheckService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jdbc.Work;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,7 +30,7 @@ public class WorkoutCheckController {
     @PostMapping("/workoutcheck/add")
     public ResponseWorkoutCheck addWorkoutCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody WorkoutCheckUpdateRequest request) {
+            @RequestBody WorkoutCheckRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
@@ -84,34 +87,34 @@ public class WorkoutCheckController {
     }
 
     @GetMapping("/workoutcheck-checkedDay")
-    public List<ResponseWorkoutCheck> getWorkoutCheckByDate(
-            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkedDay,
+    public List<ResponseWorkoutCheck> getWorkoutCheckByDateList(
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
         System.out.println("Authorization token: " + token);
-        System.out.println("Date parameter: " + checkedDay);
+        System.out.println("Date parameter: " + date);
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         List<ResponseWorkoutCheck> response = new ArrayList<>();
-        for(WorkoutCheck workoutCheck : workoutCheckService.findByDate(personChild, checkedDay)){
+        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(personChild, date)){
             response.add(new ResponseWorkoutCheck(workoutCheck));
         }
         return response;
     }
 
-    @GetMapping("/workoutcheck-parents")
-    public List<ResponseWorkoutCheck> getWorkoutCheckByParents(
-            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkedDay,
+    @GetMapping("/child-workoutcheck-checkedDay")
+    public List<ResponseWorkoutCheck> getWorkoutCheckByDateListForParents(
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
         System.out.println("Authorization token: " + token);
-        System.out.println("Date parameter: " + checkedDay);
+        System.out.println("Date parameter: " + date);
         Parents parents = parentsService.tokenToParents(token);
         if(parents == null) return null;
-        List<ResponseWorkoutCheck> response = new ArrayList<>();
         PersonChild personChild = personChildService.findChildByParent(parents);
         if(personChild == null) return null;
-        for(WorkoutCheck workoutCheck : workoutCheckService.findByDate(personChild, checkedDay)){
+        List<ResponseWorkoutCheck> response = new ArrayList<>();
+        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(personChild, date)){
             response.add(new ResponseWorkoutCheck(workoutCheck));
         }
         return response;
