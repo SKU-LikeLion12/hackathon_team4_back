@@ -2,9 +2,11 @@ package com.example.admin.controller;
 
 import com.example.admin.DTO.WorkoutCheckDTO;
 import com.example.admin.DTO.WorkoutCheckDTO.*;
+import com.example.admin.domain.Parents;
 import com.example.admin.domain.PersonChild;
 import com.example.admin.domain.WorkoutCheck;
 import com.example.admin.repository.PersonChildRepository;
+import com.example.admin.service.ParentsService;
 import com.example.admin.service.PersonChildService;
 import com.example.admin.service.WorkoutCheckService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class WorkoutCheckController {
     private final WorkoutCheckService workoutCheckService;
     private final PersonChildRepository personChildRepository;
     private final PersonChildService personChildService;
+    private final ParentsService parentsService;
 
     @PostMapping("/workoutcheck/add")
     public ResponseWorkoutCheck addWorkoutCheck(
@@ -93,24 +96,28 @@ public class WorkoutCheckController {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         List<ResponseWorkoutCheck> response = new ArrayList<>();
-        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(token, date)){
+        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(personChild, date)){
             response.add(new ResponseWorkoutCheck(workoutCheck));
         }
         return response;
     }
 
-
-
-    //부모 토큰으로 아이 운동 찾기
     @GetMapping("/child-workoutcheck-checkedDay")
-    public ResponseWorkoutCheck getWorkoutCheckByDate(
+    public List<ResponseWorkoutCheck> getWorkoutCheckByDateListForParents(
             @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestHeader("Authorization") String authorizationHeader) {
-
         String token = authorizationHeader.replace("Bearer ", "");
-        WorkoutCheck response = workoutCheckService.findByDate(token, date);
-
-        return new ResponseWorkoutCheck(response);
+        System.out.println("Authorization token: " + token);
+        System.out.println("Date parameter: " + date);
+        Parents parents = parentsService.tokenToParents(token);
+        if(parents == null) return null;
+        PersonChild personChild = personChildService.findChildByParent(parents);
+        if(personChild == null) return null;
+        List<ResponseWorkoutCheck> response = new ArrayList<>();
+        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(personChild, date)){
+            response.add(new ResponseWorkoutCheck(workoutCheck));
+        }
+        return response;
     }
 
     @GetMapping("/workoutcheck/{type}/{name}")
