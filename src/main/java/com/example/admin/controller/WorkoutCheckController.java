@@ -1,5 +1,6 @@
 package com.example.admin.controller;
 
+import com.example.admin.DTO.WorkoutCheckDTO;
 import com.example.admin.DTO.WorkoutCheckDTO.*;
 import com.example.admin.domain.PersonChild;
 import com.example.admin.domain.WorkoutCheck;
@@ -7,6 +8,7 @@ import com.example.admin.repository.PersonChildRepository;
 import com.example.admin.service.PersonChildService;
 import com.example.admin.service.WorkoutCheckService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jdbc.Work;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,7 @@ public class WorkoutCheckController {
     @PostMapping("/workoutcheck/add")
     public ResponseWorkoutCheck addWorkoutCheck(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody WorkoutCheckUpdateRequest request) {
+            @RequestBody WorkoutCheckRequest request) {
         String token = authorizationHeader.replace("Bearer ", "");
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
@@ -82,7 +84,7 @@ public class WorkoutCheckController {
     }
 
     @GetMapping("/workoutcheck-checkedDay")
-    public List<ResponseWorkoutCheck> getWorkoutCheckByDate(
+    public List<ResponseWorkoutCheck> getWorkoutCheckByDateList(
             @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
@@ -91,10 +93,24 @@ public class WorkoutCheckController {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
         List<ResponseWorkoutCheck> response = new ArrayList<>();
-        for(WorkoutCheck workoutCheck : workoutCheckService.findByDate(token, date)){
+        for(WorkoutCheck workoutCheck : workoutCheckService.findByDates(token, date)){
             response.add(new ResponseWorkoutCheck(workoutCheck));
         }
         return response;
+    }
+
+
+
+    //부모 토큰으로 아이 운동 찾기
+    @GetMapping("/child-workoutcheck-checkedDay")
+    public ResponseWorkoutCheck getWorkoutCheckByDate(
+            @RequestParam("checkedDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+        WorkoutCheck response = workoutCheckService.findByDate(token, date);
+
+        return new ResponseWorkoutCheck(response);
     }
 
     @GetMapping("/workoutcheck/{type}/{name}")

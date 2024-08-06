@@ -16,7 +16,9 @@ public interface WorkoutCheckReopsitory {
 
     List<WorkoutCheck> findByChild(PersonChild personChild);
 
-    List<WorkoutCheck> findByDate(PersonChild child, LocalDate date);
+    WorkoutCheck findByDate(PersonChild child, LocalDate date);
+
+    List<WorkoutCheck> findByDates(PersonChild child, LocalDate date);
 
     List<WorkoutCheck> findByType(PersonChild child, String type);
 

@@ -1,5 +1,6 @@
 package com.example.admin.service;
 
+import com.example.admin.domain.Parents;
 import com.example.admin.domain.PersonChild;
 import com.example.admin.domain.WorkoutCheck;
 import com.example.admin.repository.PersonChildRepository;
@@ -19,6 +20,8 @@ public class WorkoutCheckService {
     private final WorkoutCheckReopsitory workoutCheckReopsitory;
     private final PersonChildRepository personChildRepository;
     private final PersonChildService personChildService;
+    private final ParentsService parentsService;
+
 
     @Transactional
     public WorkoutCheck create(String token, LocalDate date, String type, String name) {
@@ -55,10 +58,20 @@ public class WorkoutCheckService {
     }
 
     @Transactional
-    public List<WorkoutCheck> findByDate(String token, LocalDate date) {
+    public List<WorkoutCheck> findByDates(String token, LocalDate date) {
         PersonChild personChild = personChildService.tokenToChild(token);
         if(personChild == null) return null;
-        return workoutCheckReopsitory.findByDate(personChild, date);
+        return workoutCheckReopsitory.findByDates(personChild, date);
+    }
+
+
+    public WorkoutCheck findByDate(String token, LocalDate date) {
+
+        Parents parent = parentsService.tokenToParents(token);
+
+        PersonChild child = personChildService.findChildByParent(parent);
+
+        return workoutCheckReopsitory.findByDate(child, date);
     }
 
     @Transactional
